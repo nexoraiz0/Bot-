@@ -40,7 +40,7 @@ from aiogram.types import (
 BOT_TOKEN = os.getenv("BOT_TOKEN", "ВАШ_ТОКЕН_ОТ_BOTFATHER")
 
 # Username админов, которых тегаем при джекпоте (без символа @)
-ADMIN_USERNAMES = ["nexoraizfuck", "Raivens1", "Mtl_sr"]
+ADMIN_USERNAMES = ["dol1ro"]
 
 # Username, куда отправлять смотреть выдачи прошлых призов (без символа @)
 PAST_PRIZES_USERNAME = "SeeSheperep"
@@ -116,9 +116,9 @@ def get_combo_type(symbols: tuple[str, str, str]) -> str | None:
 # Призы под подарками — количество звёзд Telegram под каждым из 30 подарков.
 # При джекпоте этот список перемешивается случайно между 30 кнопками.
 STAR_PRIZES = [
-    25, 15, 15, 15, 15, 15, 15, 15, 25, 15,
-    15, 15, 25, 50, 15, 15, 15, 15, 15, 15,
-    25, 15, 15, 15, 25, 15, 15, 25, 15, 15,
+    25, 15, 15, 15, 25, 15, 15, 15, 25, 
+    15, 15, 25, 50, 25, 15, 15, 15, 50,
+    25, 50, 25, 15, 15, 25, 25,  
 ]
 STAR_EMOJI = "⭐️"
 
@@ -132,7 +132,7 @@ BEAUTIFUL_NUMBERS = {
     999, 1001, 1111, 2222, 1777, 1444, 1222, 1999, 2777, 2999,
 }
 # Во сколько раз шанс "красивого" числа ниже, чем у обычного (10 = в 10 раз реже).
-BEAUTIFUL_NUMBER_PENALTY = 10
+BEAUTIFUL_NUMBER_PENALTY = 2
 
 # Активные игры-джекпоты: game_id -> данные об игре
 active_games = {}
