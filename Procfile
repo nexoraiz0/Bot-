@@ -1,1 +1,1 @@
-worker: python bot.py
+worker: python slot777_bot.py
