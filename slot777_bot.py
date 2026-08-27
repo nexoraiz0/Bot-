@@ -48,7 +48,6 @@ JACKPOT_VALUE = 64
 
 # Символы на барабанах слот-машины Telegram, в порядке 1-2-3-4
 REEL_SYMBOLS = ["BAR", "🍇", "🍋", "7️⃣"]
-SEVEN = "7️⃣"
 
 # Призы под подарками — количество звёзд Telegram под каждым из подарков.
 # При джекпоте этот список перемешивается случайно между кнопками.
@@ -77,11 +76,6 @@ def decode_slot_symbols(value: int) -> tuple[str, str, str]:
     r2 = REEL_SYMBOLS[(v // 4) % 4]
     r3 = REEL_SYMBOLS[(v // 16) % 4]
     return r1, r2, r3
-
-
-def is_near_miss(symbols: tuple[str, str, str]) -> bool:
-    """'Почти джекпот' — ровно два барабана из трёх показывают семёрку."""
-    return symbols.count(SEVEN) == 2
 
 
 def mention(user_id: int, name: str) -> str:
@@ -124,6 +118,11 @@ async def handle_dice(message: Message):
     if dice.emoji != "🎰":
         return
 
+    # Пересланные сообщения (в том числе с чужим настоящим броском 🎰)
+    # игнорируем — реагируем только на бросок, сделанный прямо в этом чате.
+    if message.forward_origin is not None:
+        return
+
     user = message.from_user
     symbols = decode_slot_symbols(dice.value)
     combo = " | ".join(symbols)
@@ -151,13 +150,8 @@ async def handle_dice(message: Message):
         await message.reply(
             text, reply_markup=build_gift_keyboard(game_id, active_games[game_id])
         )
-    elif is_near_miss(symbols):
-        await message.reply(
-            f"{combo}\n"
-            f"777 уже близко, попробуй еще раз ({user.full_name})"
-        )
-    # Во всех остальных случаях бот сам ничего не пишет —
-    # реагирует только на джекпот 777 и на "почти джекпот".
+    # Во всех остальных случаях (включая "почти джекпот") бот молчит —
+    # реагирует только на настоящий джекпот 777.
 
 
 @dp.callback_query(F.data.startswith("gift:"))
@@ -202,5 +196,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
     asyncio.run(main())
